@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conscientious Objective</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Newsreader:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #f7f4ef;
+  --ink: #111;
+  --muted: #888;
+  --warm: #c8a96e;
+  --olive: #4a5240;
+  --cream: #ede8df;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.grid-line { position: fixed; background: rgba(0,0,0,0.04); pointer-events: none; z-index: 0; }
+.gl-v { top: 0; bottom: 0; width: 1px; }
+.gl-h { left: 0; right: 0; height: 1px; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding: 24px 48px; display: flex; justify-content: space-between; align-items: center;
+  z-index: 100; opacity: 0; animation: in-nav 0.8s ease 0.1s forwards;
+}
+@keyframes in-nav {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.wordmark { font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; }
+.nav-price { font-family: 'Newsreader', serif; font-style: italic; font-size: 14px; color: var(--muted); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 120px 48px 80px;
+  position: relative;
+  z-index: 1;
+  gap: 48px;
+}
+
+.hero-left { display: flex; flex-direction: column; }
+
+.hero-eyebrow {
+  font-size: 11px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--warm); font-weight: 700; margin-bottom: 32px;
+  opacity: 0; animation: in-up 1s ease 0.4s forwards;
+}
+
+h1 {
+  font-size: clamp(48px, 7vw, 100px);
+  font-weight: 800; line-height: 0.92; letter-spacing: -3px;
+  opacity: 0; animation: in-up 1s ease 0.55s forwards;
+}
+
+h1 em {
+  font-family: 'Newsreader', serif; font-style: italic;
+  font-weight: 300; letter-spacing: -1px; color: var(--olive);
+}
+
+.hero-sub {
+  max-width: 480px; margin-top: 40px;
+  font-family: 'Newsreader', serif; font-style: italic; font-weight: 300;
+  font-size: clamp(16px, 1.8vw, 20px); line-height: 1.7; color: #555;
+  opacity: 0; animation: in-up 1s ease 0.75s forwards;
+}
+
+.hero-cta {
+  margin-top: 48px; display: flex; align-items: center; gap: 24px;
+  opacity: 0; animation: in-up 1s ease 0.95s forwards;
+}
+
+.btn-join {
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--bg);
+  background: var(--ink); border: none; padding: 18px 40px;
+  cursor: pointer; position: relative; overflow: hidden; transition: color 0.5s ease;
+}
+.btn-join::after {
+  content: ''; position: absolute; inset: 0; background: var(--warm);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.btn-join:hover::after { transform: scaleX(1); }
+.btn-join span { position: relative; z-index: 1; }
+
+.cta-note { font-family: 'Newsreader', serif; font-style: italic; font-size: 13px; color: var(--muted); }
+
+/* ── PEACE HAND ── */
+.hero-right {
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; animation: in-up 1.2s ease 0.7s forwards;
+  position: relative;
+}
+
+.peace-hand {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+}
+
+/* ── TICKER ── */
+.ticker-wrap {
+  border-top: 1px solid rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 14px 0; overflow: hidden; background: var(--cream);
+  position: relative; z-index: 1;
+  opacity: 0; animation: in-up 0.8s ease 1.3s forwards;
+}
+.ticker-track { display: flex; animation: ticker 32s linear infinite; white-space: nowrap; }
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.ticker-item { font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); padding: 0 40px; }
+.ticker-dot { color: var(--warm); }
+
+/* ── PREAMBLE ── */
+.constitution { padding: 120px 48px; max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--warm); margin-bottom: 48px; display: flex; align-items: center; gap: 16px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.1); }
+
+.c-para {
+  font-family: 'Newsreader', serif; font-weight: 300;
+  font-size: clamp(19px, 2.5vw, 26px); line-height: 1.7; color: var(--ink);
+  margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(0,0,0,0.07);
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.c-para:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.c-para.visible { opacity: 1; transform: translateY(0); }
+.c-para strong { font-style: italic; font-weight: 300; color: var(--olive); }
+
+/* ── OFFERINGS ── */
+.offerings { padding: 0 48px 80px; max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+.offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(0,0,0,0.08); }
+.offer-cell {
+  background: var(--bg); padding: 36px 32px;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.8s ease, transform 0.8s ease, background 0.3s ease;
+}
+.offer-cell:hover { background: var(--cream); }
+.offer-cell.visible { opacity: 1; transform: translateY(0); }
+.offer-num { font-size: 10px; font-weight: 700; letter-spacing: 3px; color: var(--warm); margin-bottom: 16px; }
+.offer-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+.offer-desc { font-family: 'Newsreader', serif; font-style: italic; font-weight: 300; font-size: 15px; line-height: 1.6; color: #666; }
+.offer-example {
+  margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.07);
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--warm);
+  margin-bottom: 6px;
+}
+.offer-example-text {
+  font-family: 'Newsreader', serif; font-style: italic; font-weight: 300;
+  font-size: 13px; line-height: 1.5; color: #999;
+}
+
+/* ── CLOSE ── */
+.close-section { padding: 80px 48px 140px; text-align: center; position: relative; z-index: 1; }
+.close-big {
+  font-size: clamp(48px, 8vw, 96px); font-weight: 800;
+  letter-spacing: -3px; line-height: 0.95; margin-bottom: 40px;
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+.close-big.visible { opacity: 1; transform: translateY(0); }
+.close-big em { font-family: 'Newsreader', serif; font-style: italic; font-weight: 300; color: var(--olive); }
+.close-sub {
+  font-family: 'Newsreader', serif; font-style: italic; font-weight: 300;
+  font-size: 18px; color: var(--muted); margin-bottom: 48px;
+  opacity: 0; transition: opacity 1s ease 0.2s;
+}
+.close-sub.visible { opacity: 1; }
+
+footer {
+  border-top: 1px solid rgba(0,0,0,0.1); padding: 32px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  position: relative; z-index: 1;
+}
+footer p { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+
+@keyframes in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cursor-dot {
+  position: fixed; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--warm); pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%); transition: opacity 0.3s ease; opacity: 0;
+}
+.progress { position: fixed; left: 0; top: 0; bottom: 0; width: 2px; background: rgba(0,0,0,0.06); z-index: 200; }
+.progress-fill { width: 100%; background: var(--warm); height: 0%; transition: height 0.1s linear; }
+
+@media (max-width: 768px) {
+  nav { padding: 20px 24px; }
+  .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+  .hero-right { display: none; }
+  h1 { letter-spacing: -2px; }
+  .constitution, .offerings { padding-left: 24px; padding-right: 24px; }
+  .offer-grid { grid-template-columns: 1fr; }
+  .close-section { padding: 60px 24px 100px; }
+  footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="dot"></div>
+<div class="progress"><div class="progress-fill" id="prog"></div></div>
+
+<div class="grid-line gl-v" style="left:48px"></div>
+<div class="grid-line gl-v" style="right:48px"></div>
+<div class="grid-line gl-h" style="top:80px"></div>
+
+<nav>
+  <div class="wordmark">Conscientious Objective</div>
+  <div class="nav-price">$2.50 / month</div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">A peace education initiative</p>
+    <h1>The <em>conscience</em><br>you build<br>is yours.</h1>
+    <p class="hero-sub">Monthly exercises, curated literature, and reflective practice for those who believe peace is not passive — it is the most disciplined act available to a person.</p>
+    <div class="hero-cta">
+      <button class="btn-join"><span>Begin</span></button>
+      <span class="cta-note">$2.50 / month &nbsp;·&nbsp; cancel anytime</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- Hyperrealistic peace sign hand linework -->
+    <svg class="peace-hand" viewBox="0 0 380 560" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-linecap="round" stroke-linejoin="round">
+
+      <!-- ═══ WRIST ═══ -->
+      <path d="M138 530 C136 515 134 498 133 480 C132 462 133 446 135 432" stroke="#111" stroke-width="1.4"/>
+      <path d="M242 530 C244 515 246 498 247 480 C248 462 247 446 245 432" stroke="#111" stroke-width="1.4"/>
+      <path d="M138 530 C165 538 215 538 242 530" stroke="#111" stroke-width="1.4"/>
+      <!-- wrist creases -->
+      <path d="M141 508 C162 514 218 514 239 508" stroke="#111" stroke-width="0.55" opacity="0.38"/>
+      <path d="M143 490 C163 495 217 495 237 490" stroke="#111" stroke-width="0.45" opacity="0.28"/>
+
+      <!-- ═══ PALM ═══ -->
+      <!-- outer left edge -->
+      <path d="M135 432 C132 418 130 402 131 388 C132 374 136 362 142 354 C148 346 156 342 164 342" stroke="#111" stroke-width="1.35"/>
+      <!-- outer right edge -->
+      <path d="M245 432 C248 418 250 402 249 388 C248 374 244 362 238 354 C232 346 224 342 216 342" stroke="#111" stroke-width="1.35"/>
+      <!-- palm creases -->
+      <path d="M148 410 C168 404 212 404 232 410" stroke="#111" stroke-width="0.5" opacity="0.32"/>
+      <path d="M145 428 C166 422 214 422 235 428" stroke="#111" stroke-width="0.45" opacity="0.25"/>
+      <!-- life line -->
+      <path d="M162 440 C166 420 170 398 172 378 C173 365 173 354 172 344" stroke="#111" stroke-width="0.5" opacity="0.3"/>
+      <!-- heart line -->
+      <path d="M150 388 C172 382 208 382 228 388" stroke="#111" stroke-width="0.45" opacity="0.28"/>
+
+      <!-- ═══ THUMB — side view, pressed lightly against palm ═══ -->
+      <path d="M137 435 C128 422 122 406 124 390 C126 375 136 364 148 360 C156 357 164 360 168 368" stroke="#111" stroke-width="1.15"/>
+      <path d="M168 368 C173 377 172 390 167 402 C162 414 156 424 154 436 C152 446 154 456 157 464" stroke="#111" stroke-width="1.15"/>
+      <!-- thumb tip -->
+      <path d="M124 390 C122 378 128 366 138 362 C148 358 158 363 163 374" stroke="#111" stroke-width="0.9"/>
+      <!-- thumb nail -->
+      <path d="M127 392 C126 381 131 372 140 369 C149 366 157 371 160 381 C161 387 160 394 158 400" stroke="#111" stroke-width="0.62" opacity="0.72"/>
+      <!-- thumb knuckle -->
+      <path d="M131 412 C138 408 148 408 155 412" stroke="#111" stroke-width="0.48" opacity="0.38"/>
+      <!-- thumb-palm webbing -->
+      <path d="M157 464 C158 452 160 442 164 436 C167 430 170 428 172 430 C174 432 174 440 172 450" stroke="#111" stroke-width="0.7" opacity="0.55"/>
+
+      <!-- ═══ RING FINGER — curled, tucked, only top knuckle visible ═══ -->
+      <!-- outer arc of curl -->
+      <path d="M164 342 C160 330 157 315 158 300 C159 287 164 276 172 271 C180 266 190 268 196 276 C202 284 203 296 200 310 C197 323 192 334 190 342" stroke="#111" stroke-width="1.1"/>
+      <!-- inner arc of curl -->
+      <path d="M174 342 C172 332 170 320 172 308 C174 297 180 289 188 288 C193 287 197 291 198 298" stroke="#111" stroke-width="0.7" opacity="0.55"/>
+      <!-- ring fingertip rounded -->
+      <path d="M172 271 C170 263 175 255 183 253 C191 251 199 257 201 266 C203 273 201 281 197 286" stroke="#111" stroke-width="0.9"/>
+      <!-- ring nail -->
+      <path d="M174 273 C173 264 178 257 186 255 C194 253 200 259 201 268" stroke="#111" stroke-width="0.6" opacity="0.68"/>
+      <!-- ring knuckle crease at middle joint -->
+      <path d="M163 306 C170 302 185 302 193 306" stroke="#111" stroke-width="0.48" opacity="0.38"/>
+
+      <!-- ═══ PINKY — curled tight, tucked behind ring ═══ -->
+      <!-- outer edge visible above ring -->
+      <path d="M155 340 C148 326 144 310 145 295 C146 281 153 270 163 266 C171 263 180 266 184 274" stroke="#111" stroke-width="1.0"/>
+      <!-- inner edge of pinky -->
+      <path d="M163 340 C158 326 155 312 157 299 C159 289 165 283 172 282" stroke="#111" stroke-width="0.65" opacity="0.5"/>
+      <!-- pinky tip -->
+      <path d="M145 295 C143 284 149 273 159 270 C169 267 178 273 180 283" stroke="#111" stroke-width="0.85"/>
+      <!-- pinky nail -->
+      <path d="M148 297 C147 286 153 277 162 275 C171 273 179 279 180 289" stroke="#111" stroke-width="0.58" opacity="0.65"/>
+
+      <!-- ═══ INDEX FINGER — extended, straight, angled slightly left ═══ -->
+      <!-- left edge -->
+      <path d="M190 342 C188 318 186 292 185 266 C184 240 184 214 185 190 C186 168 188 148 192 132" stroke="#111" stroke-width="1.3"/>
+      <!-- right edge -->
+      <path d="M216 342 C215 318 214 292 214 266 C214 240 215 214 216 190 C217 168 219 148 222 132" stroke="#111" stroke-width="1.3"/>
+      <!-- fingertip arc -->
+      <path d="M192 132 C191 118 196 106 205 101 C214 96 224 99 229 109 C232 116 232 126 230 135 C228 143 225 150 222 155" stroke="#111" stroke-width="1.1"/>
+      <!-- index nail -->
+      <path d="M194 136 C193 120 199 108 208 104 C217 100 226 106 228 120 C229 129 228 139 225 147" stroke="#111" stroke-width="0.72" opacity="0.78"/>
+      <!-- index knuckles -->
+      <path d="M188 260 C196 255 210 255 218 260" stroke="#111" stroke-width="0.55" opacity="0.4"/>
+      <path d="M187 230 C195 225 211 225 219 230" stroke="#111" stroke-width="0.5" opacity="0.35"/>
+      <path d="M187 200 C195 195 211 195 219 200" stroke="#111" stroke-width="0.45" opacity="0.30"/>
+      <!-- index finger inner shading lines -->
+      <path d="M199 330 C199 305 199 278 199 252 C199 226 200 200 201 176 C202 156 204 138 207 124" stroke="#111" stroke-width="0.4" opacity="0.18"/>
+
+      <!-- ═══ MIDDLE FINGER — extended, tallest, center ═══ -->
+      <!-- left edge -->
+      <path d="M222 340 C224 314 226 286 228 258 C230 230 232 202 234 176 C236 152 238 128 240 108" stroke="#111" stroke-width="1.35"/>
+      <!-- right edge -->
+      <path d="M252 340 C253 314 254 286 255 258 C256 230 257 202 258 176 C259 152 260 128 261 108" stroke="#111" stroke-width="1.35"/>
+      <!-- fingertip arc — tallest point -->
+      <path d="M240 108 C239 92 244 78 253 73 C262 68 273 72 278 84 C281 93 281 106 278 117 C275 127 271 134 266 140 C263 143 261 145 261 148" stroke="#111" stroke-width="1.1"/>
+      <!-- middle nail -->
+      <path d="M243 111 C241 93 247 80 257 76 C267 72 276 79 278 94 C279 104 278 115 275 124" stroke="#111" stroke-width="0.75" opacity="0.8"/>
+      <!-- middle knuckles -->
+      <path d="M224 256 C233 251 243 251 254 256" stroke="#111" stroke-width="0.58" opacity="0.42"/>
+      <path d="M225 224 C234 219 244 219 254 224" stroke="#111" stroke-width="0.52" opacity="0.36"/>
+      <path d="M226 194 C235 189 244 189 254 194" stroke="#111" stroke-width="0.46" opacity="0.30"/>
+      <!-- middle inner shading -->
+      <path d="M236 328 C237 302 238 274 239 246 C240 218 241 190 243 164 C244 142 246 122 249 105" stroke="#111" stroke-width="0.4" opacity="0.18"/>
+
+      <!-- ═══ WEBBING — index to middle ═══ -->
+      <path d="M216 342 C218 336 220 331 224 329 C228 327 234 328 238 331 C241 334 242 339 242 344" stroke="#111" stroke-width="0.9" opacity="0.62"/>
+
+      <!-- ═══ WEBBING — ring to index (where ring meets palm) ═══ -->
+      <path d="M188 342 C188 336 187 330 185 326 C183 322 180 320 178 320" stroke="#111" stroke-width="0.7" opacity="0.45"/>
+
+    </svg>
+  </div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">Newsletter <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Monthly Exercises <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Journal Practice <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Peace Tradition <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">CO Documentation <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Personal Statement <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">$2.50 / Month <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Newsletter <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Monthly Exercises <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Journal Practice <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Peace Tradition <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">CO Documentation <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Personal Statement <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">$2.50 / Month <span class="ticker-dot">✦</span></span>
+  </div>
+</div>
+
+<section class="constitution">
+  <div class="section-label">Preamble</div>
+  <p class="c-para">We hold, as our founding conviction, that <strong>conscience is not merely a private faculty but a public act</strong> — that to examine one's beliefs, to refine them through literature and history and practice, and to stand by them under pressure, is among the most courageous things a person may do.</p>
+  <p class="c-para">Conscientious Objective is a peace education initiative. For $2.50 per month, subscribers receive a structured and documented journey through the great traditions of nonviolence, pacifism, and moral refusal — from Thoreau to Gandhi to King, from Quaker theology to contemporary just war critique.</p>
+  <p class="c-para">Each month builds upon the last. <strong>Each subscriber builds a record</strong> — sincere, timestamped, and entirely their own. We make no promise of legal outcome. We offer something older and more durable: a community of conscience. Your documentation, compiled and yours to keep, supports any formal conscientious objection application you choose to pursue.</p>
+</section>
+
+<section class="offerings">
+  <div class="section-label">What you receive</div>
+  <div class="offer-grid">
+    <div class="offer-cell">
+      <div class="offer-num">01</div>
+      <div class="offer-title">Monthly Newsletter</div>
+      <div class="offer-desc">Curated literature, art, wildlife facts, music, and history — all tracing back to the principle of interdependence. Something you actually look forward to opening.</div>
+      <div class="offer-example">Month 1 example</div>
+      <div class="offer-example-text">The story of Desmond Doss — a man who decided what he believed before the war asked him to prove it, and saved 75 lives without firing a shot.</div>
+    </div>
+    <div class="offer-cell">
+      <div class="offer-num">02</div>
+      <div class="offer-title">Monthly Exercises</div>
+      <div class="offer-desc">Short, doable practices that help you find and articulate your own moral position — in your words, at your pace.</div>
+      <div class="offer-example">Month 1 example</div>
+      <div class="offer-example-text">Set a timer for 7 minutes. Record yourself explaining to a skeptical friend why you're here. Listen back once. Write down what surprised you.</div>
+    </div>
+    <div class="offer-cell">
+      <div class="offer-num">03</div>
+      <div class="offer-title">Journal Practice</div>
+      <div class="offer-desc">One prompt per month. Your written responses, dated and saved, become the core of your peace education record.</div>
+      <div class="offer-example">Month 1 prompt</div>
+      <div class="offer-example-text">"What is one belief you hold about how people should treat each other — and when did you first know you held it?"</div>
+    </div>
+    <div class="offer-cell">
+      <div class="offer-num">04</div>
+      <div class="offer-title">CO Documentation</div>
+      <div class="offer-desc">Each month's engagement is compiled into your growing portfolio — a timestamped record of sincere peace education, ready to support a formal conscientious objection application.</div>
+      <div class="offer-example">Month 8 outcome</div>
+      <div class="offer-example-text">A formatted portfolio documenting eight months of continuous peace education — yours to submit, share, or keep.</div>
+    </div>
+  </div>
+</section>
+
+<section class="close-section">
+  <div class="close-big" id="close-big">Start <em>now.</em><br>Not later.</div>
+  <div class="close-sub" id="close-sub">The paper trail begins the day you subscribe.</div>
+  <button class="btn-join" style="margin:0 auto;display:block"><span>Begin — $2.50 / mo</span></button>
+</section>
+
+<footer>
+  <p>Conscientious Objective &nbsp;·&nbsp; Est. 2026</p>
+  <p>Not legal advice &nbsp;·&nbsp; conscientiousobjective.org</p>
+</footer>
+
+<script>
+const dot = document.getElementById('dot');
+const prog = document.getElementById('prog');
+
+document.addEventListener('mousemove', e => {
+  dot.style.left = e.clientX + 'px';
+  dot.style.top  = e.clientY + 'px';
+  dot.style.opacity = '1';
+});
+
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  prog.style.height = pct + '%';
+});
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.c-para, .offer-cell, .close-big, .close-sub').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.08) + 's';
+  obs.observe(el);
+});
+
+setTimeout(() => {
+  document.querySelectorAll('.c-para, .offer-cell').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
+  });
+}, 600);
+</script>
+</body>
+</html>
