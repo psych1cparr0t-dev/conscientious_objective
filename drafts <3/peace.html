@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conscientious Objective</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Newsreader:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #f7f4ef;
+  --ink: #111;
+  --muted: #888;
+  --warm: #c8a96e;
+  --olive: #4a5240;
+  --cream: #ede8df;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.grid-line { position: fixed; background: rgba(0,0,0,0.04); pointer-events: none; z-index: 0; }
+.gl-v { top: 0; bottom: 0; width: 1px; }
+.gl-h { left: 0; right: 0; height: 1px; }
+
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 24px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  opacity: 0;
+  animation: in-nav 0.8s ease 0.1s forwards;
+}
+
+@keyframes in-nav {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.wordmark { font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; }
+.nav-price { font-family: 'Newsreader', serif; font-style: italic; font-size: 14px; color: var(--muted); }
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 48px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  font-size: 11px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--warm); font-weight: 700; margin-bottom: 32px;
+  opacity: 0; animation: in-up 1s ease 0.4s forwards;
+}
+
+h1 {
+  font-size: clamp(52px, 9vw, 112px);
+  font-weight: 800; line-height: 0.92; letter-spacing: -3px;
+  max-width: 900px; opacity: 0; animation: in-up 1s ease 0.55s forwards;
+}
+
+h1 em {
+  font-family: 'Newsreader', serif; font-style: italic;
+  font-weight: 300; letter-spacing: -1px; color: var(--olive);
+}
+
+.hero-sub {
+  max-width: 520px; margin-top: 48px;
+  font-family: 'Newsreader', serif; font-style: italic; font-weight: 300;
+  font-size: clamp(17px, 2.2vw, 22px); line-height: 1.6; color: #555;
+  opacity: 0; animation: in-up 1s ease 0.75s forwards;
+}
+
+.hero-cta {
+  margin-top: 56px; display: flex; align-items: center; gap: 32px;
+  opacity: 0; animation: in-up 1s ease 0.95s forwards;
+}
+
+.btn-join {
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--bg);
+  background: var(--ink); border: none; padding: 18px 40px;
+  cursor: pointer; position: relative; overflow: hidden; transition: color 0.5s ease;
+}
+
+.btn-join::after {
+  content: ''; position: absolute; inset: 0; background: var(--warm);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+
+.btn-join:hover::after { transform: scaleX(1); }
+.btn-join span { position: relative; z-index: 1; }
+
+.cta-note { font-family: 'Newsreader', serif; font-style: italic; font-size: 14px; color: var(--muted); }
+
+.ticker-wrap {
+  border-top: 1px solid rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 14px 0; overflow: hidden; background: var(--cream);
+  position: relative; z-index: 1;
+  opacity: 0; animation: in-up 0.8s ease 1.3s forwards;
+}
+
+.ticker-track {
+  display: flex; animation: ticker 28s linear infinite; white-space: nowrap;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.ticker-item { font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); padding: 0 40px; }
+.ticker-dot { color: var(--warm); }
+
+.constitution {
+  padding: 120px 48px; max-width: 860px; margin: 0 auto; position: relative; z-index: 1;
+}
+
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--warm); margin-bottom: 48px; display: flex; align-items: center; gap: 16px;
+}
+
+.section-label::after { content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.1); }
+
+.c-para {
+  font-family: 'Newsreader', serif; font-weight: 300;
+  font-size: clamp(19px, 2.5vw, 26px); line-height: 1.7; color: var(--ink);
+  margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(0,0,0,0.07);
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.c-para:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.c-para.visible { opacity: 1; transform: translateY(0); }
+.c-para strong { font-style: italic; font-weight: 300; color: var(--olive); }
+
+.offerings { padding: 0 48px 120px; max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+
+.offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: rgba(0,0,0,0.08); }
+
+.offer-cell {
+  background: var(--bg); padding: 36px 32px;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.8s ease, transform 0.8s ease, background 0.3s ease;
+}
+
+.offer-cell:hover { background: var(--cream); }
+.offer-cell.visible { opacity: 1; transform: translateY(0); }
+
+.offer-num { font-size: 10px; font-weight: 700; letter-spacing: 3px; color: var(--warm); margin-bottom: 16px; }
+.offer-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+.offer-desc { font-family: 'Newsreader', serif; font-style: italic; font-weight: 300; font-size: 15px; line-height: 1.6; color: #666; }
+
+.close-section { padding: 80px 48px 140px; text-align: center; position: relative; z-index: 1; }
+
+.close-big {
+  font-size: clamp(48px, 8vw, 96px); font-weight: 800;
+  letter-spacing: -3px; line-height: 0.95; margin-bottom: 40px;
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.close-big.visible { opacity: 1; transform: translateY(0); }
+.close-big em { font-family: 'Newsreader', serif; font-style: italic; font-weight: 300; color: var(--olive); }
+
+.close-sub {
+  font-family: 'Newsreader', serif; font-style: italic; font-weight: 300;
+  font-size: 18px; color: var(--muted); margin-bottom: 48px;
+  opacity: 0; transition: opacity 1s ease 0.2s;
+}
+
+.close-sub.visible { opacity: 1; }
+
+footer {
+  border-top: 1px solid rgba(0,0,0,0.1); padding: 32px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  position: relative; z-index: 1;
+}
+
+footer p { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+
+@keyframes in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cursor-dot {
+  position: fixed; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--warm); pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%); transition: opacity 0.3s ease; opacity: 0;
+}
+
+.progress { position: fixed; left: 0; top: 0; bottom: 0; width: 2px; background: rgba(0,0,0,0.06); z-index: 200; }
+.progress-fill { width: 100%; background: var(--warm); height: 0%; transition: height 0.1s linear; }
+
+@media (max-width: 640px) {
+  nav { padding: 20px 24px; }
+  .hero { padding: 100px 24px 60px; }
+  h1 { letter-spacing: -2px; }
+  .constitution, .offerings { padding-left: 24px; padding-right: 24px; }
+  .offer-grid { grid-template-columns: 1fr; }
+  .close-section { padding: 60px 24px 100px; }
+  footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="dot"></div>
+<div class="progress"><div class="progress-fill" id="prog"></div></div>
+
+<div class="grid-line gl-v" style="left:48px"></div>
+<div class="grid-line gl-v" style="right:48px"></div>
+<div class="grid-line gl-h" style="top:80px"></div>
+
+<nav>
+  <div class="wordmark">Conscientious Objective</div>
+  <div class="nav-price">$2.50 / month</div>
+</nav>
+
+<section class="hero">
+  <p class="hero-eyebrow">A peace education initiative</p>
+  <h1>The <em>conscience</em><br>you build<br>is yours.</h1>
+  <p class="hero-sub">Monthly coursework, curated literature, and reflective practice for those who believe peace is not passive — it is the most disciplined act available to a person.</p>
+  <div class="hero-cta">
+    <button class="btn-join"><span>Begin Your Record</span></button>
+    <span class="cta-note">$2.50 / month &nbsp;·&nbsp; cancel anytime</span>
+  </div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">Newsletter <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Coursework <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Journal Practice <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Peace Tradition <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Personal Statement <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Documented Belief <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">$2.50 / Month <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Newsletter <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Coursework <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Journal Practice <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Peace Tradition <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Personal Statement <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Documented Belief <span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">$2.50 / Month <span class="ticker-dot">✦</span></span>
+  </div>
+</div>
+
+<section class="constitution">
+  <div class="section-label">Preamble</div>
+  <p class="c-para">We hold, as our founding conviction, that <strong>conscience is not merely a private faculty but a public act</strong> — that to examine one's beliefs, to refine them through literature and history and practice, and to stand by them under pressure, is among the most courageous things a person may do.</p>
+  <p class="c-para">Conscientious Objective is a peace education initiative. For $2.50 per month, subscribers receive a structured and documented journey through the great traditions of nonviolence, pacifism, and moral refusal — from Thoreau to Gandhi to King, from Quaker theology to contemporary just war critique.</p>
+  <p class="c-para">Each month builds upon the last. <strong>Each subscriber builds a record</strong> — sincere, timestamped, and entirely their own. We make no promise of legal outcome. We offer something older and more durable: a community of conscience.</p>
+  <p class="c-para">What you do with that is yours alone to decide.</p>
+</section>
+
+<section class="offerings">
+  <div class="section-label">What you receive</div>
+  <div class="offer-grid">
+    <div class="offer-cell">
+      <div class="offer-num">01</div>
+      <div class="offer-title">Monthly Newsletter</div>
+      <div class="offer-desc">Curated literature, art for peace, historical examples, and a meditation practice. Something you actually look forward to opening.</div>
+    </div>
+    <div class="offer-cell">
+      <div class="offer-num">02</div>
+      <div class="offer-title">Structured Coursework</div>
+      <div class="offer-desc">Progressive modules through public service theory, nonviolence philosophy, and the full inheritance of the peace tradition.</div>
+    </div>
+    <div class="offer-cell">
+      <div class="offer-num">03</div>
+      <div class="offer-title">Journal Practice</div>
+      <div class="offer-desc">Reflective prompts and take-home analysis that build a documented record of sincere engagement over time.</div>
+    </div>
+    <div class="offer-cell">
+      <div class="offer-num">04</div>
+      <div class="offer-title">CO Preparation</div>
+      <div class="offer-desc">Personal statement workshops, public speaking frameworks, and scriptwriting help for articulating your beliefs under pressure.</div>
+    </div>
+  </div>
+</section>
+
+<section class="close-section">
+  <div class="close-big" id="close-big">Start <em>now.</em><br>Not later.</div>
+  <div class="close-sub" id="close-sub">The paper trail begins the day you subscribe.</div>
+  <button class="btn-join" style="margin:0 auto;display:block"><span>Begin Your Record — $2.50 / mo</span></button>
+</section>
+
+<footer>
+  <p>Conscientious Objective &nbsp;·&nbsp; Est. 2026</p>
+  <p>Not legal advice &nbsp;·&nbsp; conscientiousobjective.org</p>
+</footer>
+
+<script>
+const dot = document.getElementById('dot');
+const prog = document.getElementById('prog');
+
+document.addEventListener('mousemove', e => {
+  dot.style.left = e.clientX + 'px';
+  dot.style.top  = e.clientY + 'px';
+  dot.style.opacity = '1';
+});
+
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  prog.style.height = pct + '%';
+});
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.c-para, .offer-cell, .close-big, .close-sub').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.08) + 's';
+  obs.observe(el);
+});
+
+setTimeout(() => {
+  document.querySelectorAll('.c-para, .offer-cell').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
+  });
+}, 600);
+</script>
+</body>
+</html>
