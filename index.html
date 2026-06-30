@@ -118,9 +118,7 @@
 
   <canvas id="scene"></canvas>
 
-  <div class="gl glv" style="left:48px"></div>
-  <div class="gl glv" style="right:48px"></div>
-  <div class="gl glh" style="top:72px"></div>
+
 
   <div class="title-wrap">
     <h1>The Conscientious Objective</h1>
@@ -329,6 +327,10 @@
       return tex;
     }
 
+    const carouselGroup = new THREE.Group();
+    scene.add(carouselGroup);
+    const posters = [];
+
     function makePoster(texDraw, w, h, pos, rotY, tilt) {
       const tex = posterTexture(texDraw);
       const mat = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.85, side: THREE.DoubleSide });
@@ -345,16 +347,19 @@
       sheet.rotation.x = tilt || 0;
       g.position.copy(pos);
       g.rotation.y = rotY;
-      tree.add(g);
+      
+      // Setup for animation
+      g.scale.set(0, 0, 0);
+      g.userData = { baseY: pos.y, targetScale: 0 };
+      
+      carouselGroup.add(g);
+      posters.push(g);
       return g;
     }
 
-    // Poster 1 — the manifesto plate, on the trunk facing the camera
+    // Poster 1 — the manifesto plate, in the carousel
     makePoster((ctx, W, H) => {
       ctx.textAlign = 'center';
-      ctx.fillStyle = '#c8a96e';
-      ctx.font = '700 22px Inter, sans-serif';
-      ctx.fillText('A P E A C E   I N I T I A T I V E', W/2, 86);
       ctx.fillStyle = '#111111';
       ctx.font = '800 58px Inter, sans-serif';
       ctx.fillText('The', W/2, 200);
@@ -387,7 +392,17 @@
       ctx.fillStyle = '#888888';
       ctx.font = 'italic 400 24px "Playfair Display", serif';
       ctx.fillText('— begin your record', W/2, 590);
-    }, 1.5, 1.95, new THREE.Vector3(-1.8, 3.8, 2.8), -0.5, 0.05);
+    }, 1.5, 1.95, new THREE.Vector3(-1.8, 3.8, -2.8), -3.0, 0.05);
+
+    /* ══════════════════════════════════════════════════════════
+       INTERACTION & RAYCASTING
+       ══════════════════════════════════════════════════════════ */
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2(-1, -1);
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
 
     /* ══════════════════════════════════════════════════════════
        RENDER LOOP
@@ -403,6 +418,28 @@
 
     function tick() {
       controls.update();
+      
+      // Carousel Rotation
+      carouselGroup.rotation.y += 0.0015;
+      
+      // Raycasting for hover
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(posters, true);
+      const hovered = intersects.length > 0 ? intersects[0].object.parent : null;
+      
+      posters.forEach(p => {
+        // Vertical shift on hover
+        const targetY = (p === hovered) ? p.userData.baseY + 0.3 : p.userData.baseY;
+        p.position.y += (targetY - p.position.y) * 0.1;
+        
+        // Elastic scale-in animation
+        if (p.userData.targetScale > 0) {
+          p.scale.x += (p.userData.targetScale - p.scale.x) * 0.12;
+          p.scale.y += (p.userData.targetScale - p.scale.y) * 0.12;
+          p.scale.z += (p.userData.targetScale - p.scale.z) * 0.12;
+        }
+      });
+      
       renderer.render(scene, camera);
       requestAnimationFrame(tick);
     }
@@ -423,6 +460,14 @@
           setTimeout(() => {
             document.querySelector('.hint').classList.add('animate');
             document.querySelector('.btn').classList.add('animate');
+            
+            // 3. Cards load in one by one
+            setTimeout(() => {
+              posters.forEach((p, i) => {
+                setTimeout(() => { p.userData.targetScale = 1; }, i * 300);
+              });
+            }, 600);
+            
           }, 1800); // 2. Button and hint appear after title
         }
         else setTimeout(reveal, 120);
