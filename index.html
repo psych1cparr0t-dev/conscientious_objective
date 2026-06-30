@@ -187,20 +187,6 @@
     scene.add(rim);
 
     /* ══════════════════════════════════════════════════════════
-       COBBLESTONE PLOT
-       A sunken earth disc ringed and paved with scattered stones.
-       ══════════════════════════════════════════════════════════ */
-    const plot = new THREE.Group();
-    scene.add(plot);
-
-    // earth base disc
-    const earthMat = new THREE.MeshStandardMaterial({ color: 0x6a5d4c, roughness: 1 });
-    const earth = new THREE.Mesh(new THREE.CircleGeometry(7.4, 64), earthMat);
-    earth.rotation.x = -Math.PI / 2;
-    earth.position.y = 0.02;
-    earth.receiveShadow = true;
-    plot.add(earth);
-
     // a soft surrounding ground (the paper plane) to catch the far shadow
     const groundMat = new THREE.MeshStandardMaterial({ color: 0xece6db, roughness: 1 });
     const ground = new THREE.Mesh(new THREE.CircleGeometry(40, 48), groundMat);
@@ -208,38 +194,6 @@
     ground.position.y = -0.02;
     ground.receiveShadow = true;
     scene.add(ground);
-
-    // cobblestones — instanced, scattered in rings within the disc
-    const stoneGeo = new THREE.DodecahedronGeometry(0.5, 0);
-    stoneGeo.scale(1, 0.42, 1); // flatten into a paver
-    const stoneCols = [0x9c958a, 0xb3a99a, 0x8a8175, 0x7d7468, 0xa89f90];
-    const stoneMat = new THREE.MeshStandardMaterial({ roughness: 0.95, flatShading: true });
-    const COUNT = 320;
-    const stones = new THREE.InstancedMesh(stoneGeo, stoneMat, COUNT);
-    stones.castShadow = true; stones.receiveShadow = true;
-    const m = new THREE.Matrix4();
-    const q = new THREE.Quaternion();
-    const e = new THREE.Euler();
-    const v = new THREE.Vector3();
-    const col = new THREE.Color();
-    let placed = 0;
-    for (let i = 0; i < COUNT * 3 && placed < COUNT; i++) {
-      const r = Math.sqrt(Math.random()) * 7.0;
-      const a = Math.random() * Math.PI * 2;
-      const x = Math.cos(a) * r, z = Math.sin(a) * r;
-      if (Math.sqrt(x*x + z*z) < 0.95) continue;       // leave room for the trunk
-      const s = 0.34 + Math.random() * 0.5;
-      e.set((Math.random()-0.5)*0.25, Math.random()*Math.PI, (Math.random()-0.5)*0.25);
-      q.setFromEuler(e);
-      v.set(x, 0.12 + Math.random()*0.04, z);
-      m.compose(v, q, new THREE.Vector3(s, s, s));
-      stones.setMatrixAt(placed, m);
-      stones.setColorAt(placed, col.setHex(stoneCols[(Math.random()*stoneCols.length)|0]));
-      placed++;
-    }
-    stones.count = placed;
-    stones.instanceMatrix.needsUpdate = true;
-    plot.add(stones);
 
     /* ══════════════════════════════════════════════════════════
        THE OLIVE TREE
