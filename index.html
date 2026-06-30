@@ -202,6 +202,13 @@
     ground.receiveShadow = true;
     scene.add(ground);
 
+    // Matrix / Animus grounding lattice
+    const grid = new THREE.GridHelper(80, 80, 0x111111, 0x111111);
+    grid.position.y = -0.01;
+    grid.material.opacity = 0.04;
+    grid.material.transparent = true;
+    scene.add(grid);
+
     /* ══════════════════════════════════════════════════════════
        THE OLIVE TREE
        Gnarled silver trunk + forking limbs + soft silver-green
