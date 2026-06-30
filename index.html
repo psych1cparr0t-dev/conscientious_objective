@@ -41,7 +41,7 @@
     text-transform: uppercase; color: var(--warm); margin-top: 18px;
   }
   h1 {
-    font-size: clamp(40px, 7vw, 92px); font-weight: 800;
+    font-size: clamp(30px, 6vw, 72px); font-weight: 800;
     line-height: 0.9; letter-spacing: -3px;
   }
 
@@ -285,8 +285,10 @@
       const vCount = pos.count, triCount = vCount / 3;
 
       // weld by quantized position, then union-find connected components
-      const Q = 0.2, OFF = 2000, GR = 20000;
-      const key = (x, y, z) => ((Math.round((x + OFF) / Q) * GR) + Math.round((y + OFF) / Q)) * GR + Math.round((z + OFF) / Q);
+      g.computeBoundingBox();
+      const rawSize = g.boundingBox.getSize(new THREE.Vector3());
+      const Q = rawSize.y * 0.0001; // dynamically adapt precision to raw mesh size
+      const key = (x, y, z) => Math.round(x / Q) + ',' + Math.round(y / Q) + ',' + Math.round(z / Q);
       const map = new Map(), rep = new Int32Array(vCount);
       for (let i = 0; i < vCount; i++) {
         const k = key(pos.getX(i), pos.getY(i), pos.getZ(i));
@@ -404,7 +406,7 @@
       ctx.fillStyle = '#111111';
       ctx.font = '700 24px Syne, sans-serif';
       ctx.fillText('$2.50 / MONTH', W/2, 596);
-    }, 1.85, 2.35, new THREE.Vector3(1.7, 2.15, 1.95), 0.62, -0.04);
+    }, 1.9, 2.45, new THREE.Vector3(0, 2.8, 1.2), 0.0, -0.04);
 
     // Poster 2 — a journal-prompt slip nailed to a low limb
     makePoster((ctx, W, H) => {
@@ -419,7 +421,7 @@
       ctx.fillStyle = '#888888';
       ctx.font = 'italic 300 24px Newsreader, serif';
       ctx.fillText('— begin your record', W/2, 590);
-    }, 1.5, 1.95, new THREE.Vector3(-1.85, 3.45, 1.35), 0.5, 0.05);
+    }, 1.5, 1.95, new THREE.Vector3(-1.8, 3.8, 0.5), -0.5, 0.05);
 
     /* ══════════════════════════════════════════════════════════
        RENDER LOOP
