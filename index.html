@@ -41,7 +41,7 @@
     text-transform: uppercase; color: var(--warm); margin-top: 18px;
   }
   h1 {
-    font-size: clamp(30px, 6vw, 72px); font-weight: 800;
+    font-size: clamp(24px, 4.5vw, 60px); font-weight: 800;
     line-height: 0.9; letter-spacing: -3px;
   }
 
@@ -281,7 +281,7 @@
       src.updateWorldMatrix(true, true);
       const g = (src.geometry.index ? src.geometry.toNonIndexed() : src.geometry.clone());
       g.applyMatrix4(src.matrixWorld); // bake the glTF Y-up node transform into the verts
-      const pos = g.attributes.position, uv = g.attributes.uv;
+      const pos = g.attributes.position, uv = g.attributes.uv, norm = g.attributes.normal;
       const vCount = pos.count, triCount = vCount / 3;
 
       // weld by quantized position, then union-find connected components
@@ -305,27 +305,29 @@
 
       // partition triangles: small component => leaf card, else wood
       const THRESH = 20;
-      const woodP = [], woodU = [], leafP = [], leafU = [];
+      const woodP = [], woodU = [], woodN = [], leafP = [], leafU = [], leafN = [];
       for (let t = 0; t < triCount; t++) {
         const leaf = csize.get(find(t * 3)) <= THRESH;
-        const P = leaf ? leafP : woodP, U = leaf ? leafU : woodU;
+        const P = leaf ? leafP : woodP, U = leaf ? leafU : woodU, N = leaf ? leafN : woodN;
         for (let k = 0; k < 3; k++) {
           const vi = t * 3 + k;
           P.push(pos.getX(vi), pos.getY(vi), pos.getZ(vi));
           U.push(uv.getX(vi), uv.getY(vi));
+          if (norm) N.push(norm.getX(vi), norm.getY(vi), norm.getZ(vi));
         }
       }
-      function build(P, U) {
+      function build(P, U, N) {
         const gg = new THREE.BufferGeometry();
         gg.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
         gg.setAttribute('uv', new THREE.Float32BufferAttribute(U, 2));
-        gg.computeVertexNormals();
+        if (N.length > 0) gg.setAttribute('normal', new THREE.Float32BufferAttribute(N, 3));
+        else gg.computeVertexNormals();
         return gg;
       }
       const woodMat = new THREE.MeshStandardMaterial({ map: barkD, normalMap: barkN, roughness: 0.95, metalness: 0, color: 0xb7a98a });
       const leafMat = new THREE.MeshStandardMaterial({ map: leafD, alphaMap: leafO, normalMap: leafN, alphaTest: 0.5, side: THREE.DoubleSide, roughness: 0.82, metalness: 0, color: 0x8f9b6f });
-      const woodMesh = new THREE.Mesh(build(woodP, woodU), woodMat);
-      const leafMesh = new THREE.Mesh(build(leafP, leafU), leafMat);
+      const woodMesh = new THREE.Mesh(build(woodP, woodU, woodN), woodMat);
+      const leafMesh = new THREE.Mesh(build(leafP, leafU, leafN), leafMat);
       woodMesh.castShadow = woodMesh.receiveShadow = true;
       leafMesh.castShadow = leafMesh.receiveShadow = true;
 
@@ -406,7 +408,7 @@
       ctx.fillStyle = '#111111';
       ctx.font = '700 24px Syne, sans-serif';
       ctx.fillText('$2.50 / MONTH', W/2, 596);
-    }, 1.9, 2.45, new THREE.Vector3(0, 2.8, 1.2), 0.0, -0.04);
+    }, 1.9, 2.45, new THREE.Vector3(0, 2.8, 3.5), 0.0, -0.04);
 
     // Poster 2 — a journal-prompt slip nailed to a low limb
     makePoster((ctx, W, H) => {
@@ -421,7 +423,7 @@
       ctx.fillStyle = '#888888';
       ctx.font = 'italic 300 24px Newsreader, serif';
       ctx.fillText('— begin your record', W/2, 590);
-    }, 1.5, 1.95, new THREE.Vector3(-1.8, 3.8, 0.5), -0.5, 0.05);
+    }, 1.5, 1.95, new THREE.Vector3(-1.8, 3.8, 2.8), -0.5, 0.05);
 
     /* ══════════════════════════════════════════════════════════
        RENDER LOOP
