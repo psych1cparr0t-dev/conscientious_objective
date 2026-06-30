@@ -301,14 +301,14 @@
       const uni = (a, b) => { a = find(rep[a]); b = find(rep[b]); if (a !== b) parent[a] = b; };
       for (let t = 0; t < triCount; t++) { uni(t * 3, t * 3 + 1); uni(t * 3 + 1, t * 3 + 2); }
       const csize = new Map();
-      for (let i = 0; i < vCount; i++) { const r = find(i); csize.set(r, (csize.get(r) || 0) + 1); }
+      for (let i = 0; i < vCount; i++) { const r = find(rep[i]); csize.set(r, (csize.get(r) || 0) + 1); }
 
       // partition triangles: small component => leaf card, else wood
       // partition triangles: small components (< 120 verts) => leaf card, else wood
       const THRESH = 120;
       const woodP = [], woodU = [], woodN = [], leafP = [], leafU = [], leafN = [];
       for (let t = 0; t < triCount; t++) {
-        const leaf = csize.get(find(t * 3)) <= THRESH;
+        const leaf = csize.get(find(rep[t * 3])) <= THRESH;
         const P = leaf ? leafP : woodP, U = leaf ? leafU : woodU, N = leaf ? leafN : woodN;
         for (let k = 0; k < 3; k++) {
           const vi = t * 3 + k;
