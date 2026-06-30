@@ -207,6 +207,8 @@
     grid.position.y = -0.01;
     grid.material.opacity = 0.04;
     grid.material.transparent = true;
+    grid.scale.set(0.001, 0.001, 0.001); // start collapsed
+    grid.userData = { targetScale: 0 };
     scene.add(grid);
 
     /* ══════════════════════════════════════════════════════════
@@ -466,6 +468,13 @@
         }
       });
       
+      // Grid expansion animation
+      if (grid.userData && grid.userData.targetScale > 0) {
+        grid.scale.x += (grid.userData.targetScale - grid.scale.x) * 0.03;
+        grid.scale.y += (grid.userData.targetScale - grid.scale.y) * 0.03;
+        grid.scale.z += (grid.userData.targetScale - grid.scale.z) * 0.03;
+      }
+      
       renderer.render(scene, camera);
       requestAnimationFrame(tick);
     }
@@ -477,6 +486,11 @@
         if (treeReady) {
           const veil = document.getElementById('veil');
           veil.classList.add('gone');
+          
+          // Trigger grid rendering outwards
+          setTimeout(() => {
+            grid.userData.targetScale = 1;
+          }, 100);
           
           // Procedural load-in
           setTimeout(() => {
