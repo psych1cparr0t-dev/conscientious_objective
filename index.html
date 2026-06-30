@@ -6,9 +6,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Conscientious Objective</title>
-<link rel="stylesheet" href="../../styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
-  :root { --paper: #f7f4ef; --warm: #c8a96e; --olive: #4a5240; --ink: #111111; --muted: #888888; --line-3: rgba(0,0,0,0.06); --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1); --dur-base: 0.4s; --font-display: 'Syne', sans-serif; --font-serif: 'Newsreader', serif; }
+  :root { --paper: #f7f4ef; --warm: #c8a96e; --olive: #4a5240; --ink: #111111; --muted: #888888; --line-3: rgba(0,0,0,0.06); --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1); --dur-base: 0.4s; --font-display: 'Inter', sans-serif; --font-serif: 'Playfair Display', serif; }
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; overflow: hidden; background: var(--paper); }
   body { font-family: var(--font-display); color: var(--ink); }
@@ -34,7 +34,10 @@
   .title-wrap {
     position: fixed; top: 84px; left: 0; right: 0; z-index: 2;
     text-align: center; pointer-events: none;
-    opacity: 0; animation: rise 1.1s var(--ease-out) 0.3s forwards;
+    opacity: 0; transform: translateY(14px);
+  }
+  .title-wrap.animate {
+    animation: rise 1.1s var(--ease-out) forwards;
   }
   .eyebrow {
     font-size: 11px; font-weight: 700; letter-spacing: 5px;
@@ -56,7 +59,10 @@
     font-family: var(--font-serif); font-style: italic;
     font-size: 14px; color: var(--muted);
     display: flex; align-items: center; gap: 10px;
-    opacity: 0; animation: fade 1s ease 1.4s forwards;
+    opacity: 0;
+  }
+  .hint.animate {
+    animation: fade 1s ease forwards;
   }
   .hint .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warm); display: inline-block; }
   .btn {
@@ -65,7 +71,10 @@
     letter-spacing: 3px; text-transform: uppercase; color: var(--paper);
     background: var(--ink); border: none; padding: 18px 36px;
     cursor: pointer; position: relative; overflow: hidden;
-    opacity: 0; animation: fade 1s ease 1.6s forwards;
+    opacity: 0;
+  }
+  .btn.animate {
+    animation: fade 1s ease forwards;
   }
   .btn::after {
     content: ""; position: absolute; inset: 0; background: var(--warm);
@@ -344,24 +353,24 @@
     makePoster((ctx, W, H) => {
       ctx.textAlign = 'center';
       ctx.fillStyle = '#c8a96e';
-      ctx.font = '700 22px Syne, sans-serif';
+      ctx.font = '700 22px Inter, sans-serif';
       ctx.fillText('A P E A C E   I N I T I A T I V E', W/2, 86);
       ctx.fillStyle = '#111111';
-      ctx.font = '800 58px Syne, sans-serif';
+      ctx.font = '800 58px Inter, sans-serif';
       ctx.fillText('The', W/2, 200);
       ctx.fillText('Conscientious', W/2, 262);
       ctx.fillStyle = '#4a5240';
-      ctx.font = 'italic 300 70px Newsreader, serif';
+      ctx.font = 'italic 400 70px "Playfair Display", serif';
       ctx.fillText('Objective', W/2, 340);
       ctx.strokeStyle = 'rgba(0,0,0,0.12)'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(110, 390); ctx.lineTo(W-110, 390); ctx.stroke();
       ctx.fillStyle = '#555555';
-      ctx.font = 'italic 300 27px Newsreader, serif';
+      ctx.font = 'italic 400 27px "Playfair Display", serif';
       ctx.fillText('Monthly coursework, curated', W/2, 448);
       ctx.fillText('literature, and reflective practice', W/2, 486);
       ctx.fillText('for a documented conscience.', W/2, 524);
       ctx.fillStyle = '#111111';
-      ctx.font = '700 24px Syne, sans-serif';
+      ctx.font = '700 24px Inter, sans-serif';
       ctx.fillText('$2.50 / MONTH', W/2, 596);
     }, 1.9, 2.45, new THREE.Vector3(0, 2.8, 3.5), 0.0, -0.04);
 
@@ -369,14 +378,14 @@
     makePoster((ctx, W, H) => {
       ctx.textAlign = 'center';
       ctx.fillStyle = '#c8a96e';
-      ctx.font = '700 22px Syne, sans-serif';
+      ctx.font = '700 22px Inter, sans-serif';
       ctx.fillText('M O N T H   O N E   ·   P R O M P T', W/2, 130);
       ctx.fillStyle = '#111111';
-      ctx.font = 'italic 300 40px Newsreader, serif';
+      ctx.font = 'italic 400 40px "Playfair Display", serif';
       const lines = ['“What is one belief you', 'hold about how people', 'should treat each other —', 'and when did you first', 'know you held it?”'];
       lines.forEach((l, i) => ctx.fillText(l, W/2, 250 + i*64));
       ctx.fillStyle = '#888888';
-      ctx.font = 'italic 300 24px Newsreader, serif';
+      ctx.font = 'italic 400 24px "Playfair Display", serif';
       ctx.fillText('— begin your record', W/2, 590);
     }, 1.5, 1.95, new THREE.Vector3(-1.8, 3.8, 2.8), -0.5, 0.05);
 
@@ -402,7 +411,20 @@
     const start = () => {
       tick();
       const reveal = () => {
-        if (treeReady) document.getElementById('veil').classList.add('gone');
+        if (treeReady) {
+          const veil = document.getElementById('veil');
+          veil.classList.add('gone');
+          
+          // Procedural load-in
+          setTimeout(() => {
+            document.querySelector('.title-wrap').classList.add('animate');
+          }, 800); // 1. Title appears after veil fades (tree is visible)
+          
+          setTimeout(() => {
+            document.querySelector('.hint').classList.add('animate');
+            document.querySelector('.btn').classList.add('animate');
+          }, 1800); // 2. Button and hint appear after title
+        }
         else setTimeout(reveal, 120);
       };
       setTimeout(reveal, 250);
