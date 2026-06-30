@@ -123,13 +123,7 @@
     <button class="btn"><span>Begin Your Record</span></button>
   </footer>
 
-  <div id="veil">
-    <div class="loader-spinner"></div>
-  </div>
-  <style>
-    .loader-spinner { width: 24px; height: 24px; border: 2px solid var(--muted); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
+  <div id="veil"><div class="l">Rendering...</div></div>
 
   <script src="https://unpkg.com/three@0.134.0/build/three.min.js"></script>
   <script src="https://unpkg.com/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
@@ -291,9 +285,9 @@
       const vCount = pos.count, triCount = vCount / 3;
 
       // weld by quantized position, then union-find connected components
-      // weld strictly by exact position to merge UV seams without welding leaves to twigs
+      // weld by quantized position, then union-find connected components
       g.computeBoundingBox();
-      const Q = 0.0001; 
+      const Q = 0.005; // 5mm precision
       const key = (x, y, z) => Math.round(x / Q) + ',' + Math.round(y / Q) + ',' + Math.round(z / Q);
       const map = new Map(), rep = new Int32Array(vCount);
       for (let i = 0; i < vCount; i++) {
